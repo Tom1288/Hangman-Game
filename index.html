@@ -64,6 +64,10 @@
   var lettersGuessed = [];
   // Empty Array that holds the letters of the random words//
   var answerArray = [];
+    //Countdouwn for number of guesses//
+  var numberGuesses = parseInt(currentWord.length) +5;
+
+
   
   //dynamic div for Info desplayed on page//
   var div = document.createElement('div');
@@ -75,59 +79,28 @@
   var Losses = 0;
 
 
+    for (var i = 0; i < currentWord.length; i++) {
 
-  //consolelogging arrya of words and chosen word to make sure it works//
-  console.log(words);
-  console.log(currentWord);
-
-
+      answerArray[i] = "_"
+  
+    };
 
 
 // Event listner function for when a key is pressed//
 document.onkeypress = function (event) {
 
 //preventing the page from refreshing//
-  event.preventDefault();
+event.preventDefault();
+
+console.log(currentWord)
+
+// if (answerArray == currentWord.toString()) {
+//   console.log(answerArray[i])
+
+//   alert("winner");
+
+// } else 
   
-  //recording key pressed by user//
-  var letterGuessed = event.key;
-
-  //Checking to make sure that key pressed are a-z letters//
-  if (letterGuessed.length === 1 && letterGuessed.match(/[a-z]/i)) {
-    //Checking to see if letter was already pressed and retuening alert//
-    if (lettersGuessed.indexOf(letterGuessed) === -1) {
-      lettersGuessed.push(letterGuessed);
-    } else {
-     alert("no!") 
-    };
-  } else {
-    alert('Not Accepted!')
-  };
-
-//removing error for null array and making txt content letters guessed array//
-  if (lettersGuessed === null) {
-  } else {
-    divLetters.textContent = lettersGuessed;
-  }; 
-
-//replacing word with dashes
-
-  for (var i = 0; i < currentWord.length; i++) {
-
-    answerArray[i] = "_";
-    console.log(answerArray[i])
-
-//replacing dashes with letter guessed
-    if (currentWord[i] === letterGuessed) {
-
-      answerArray[i] = letterGuessed;
-      console.log(currentWord[i])
-      console.log(letterGuessed)
-    };
-
-//Countdouwn for number of guesses//
-  var numberGuesses = parseInt(answerArray.length) +5;
-
   if (numberGuesses === 0) {
 
     alert("Game Over! You Lose!")
@@ -135,21 +108,74 @@ document.onkeypress = function (event) {
   } else {
 
     numberGuesses = numberGuesses -1;
-    divGuessesRem.textContent = numberGuesses; 
 
   };  
+
+//recording key pressed by user//
+var letterGuessed = event.key.toLowerCase();
+  
+  //Checking to make sure that key pressed are a-z letters//
+  if (letterGuessed.length === 1 && letterGuessed.match(/[a-z]/i)) {
+    //Checking to see if letter was already pressed and retuening alert//
+    if (lettersGuessed.indexOf(letterGuessed) === -1) {
+      lettersGuessed.push(letterGuessed);
+    } else {
+     alert("Letter was already guessed!") 
+    };
+  } else {
+    alert('This value is not Accepted!')
   };
 
-  divWord.textContent = answerArray.join(" ")
+  //Correcting empty array error and assigning letterGuessed array to dynammic javascript Element.
+    if (lettersGuessed === null) {
+    } else {
+      divLetters.textContent = lettersGuessed;
+    }; 
 
+//Appending Javascript dynamic element to HTML element
+document.getElementById("lettersGuessed").appendChild(divLetters);
+
+  //Creating for for letters guessed.
+  lettersGuessed.forEach(function report(str) {
+  
+    //creating for loop for current word length
+    for (var i = 0; i < currentWord.length; i++) {
+
+      if (currentWord[i] === " ") {
+
+        answerArray[i] = "\xa0";
+
+      } else if (str === currentWord[i]) {
+
+
+        answerArray[i] = str;
+        console.log(answerArray.join(""))
+        console.log(currentWord)
+
+      };  
+    };
+  });
+
+
+  divGuessesRem.textContent = numberGuesses; 
   document.getElementById("GuessesRem").appendChild(divGuessesRem);  
+
+divWord.textContent = answerArray.join(" ")
+document.getElementById("currentWord").appendChild(divWord);
 };
 
-  document.getElementById("currentWord").appendChild(divWord);
-  document.getElementById("lettersGuessed").appendChild(divLetters);
 
 
 
+
+
+ 
+
+// };
+
+  // divWord.textContent = answerArray.join(" ")
+  // document.getElementById("currentWord").appendChild(divWord);
+  // document.getElementById("lettersGuessed").appendChild(divLetters);
 
 
 //Calculating Wins and Losses//
